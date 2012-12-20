@@ -76,6 +76,11 @@
  */
 - (void) selectDate:(NSDate*)date;
 
+/** Animates the calendar to the next or previous month.
+@param isNext YES for next month, NO for previous month.
+*/
+- (void) animateToNextOrPreviousMonth:(BOOL)isNext;
+
 /** Reloads the current month grid. */
 - (void) reload;
 

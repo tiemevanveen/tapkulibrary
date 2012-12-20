@@ -715,8 +715,11 @@
 }
 
 - (void) changeMonthAnimation:(UIView*)sender{
-	
 	BOOL isNext = (sender.tag == 1);
+	[self animateToNextOrPreviousMonth:isNext];
+}
+
+- (void) animateToNextOrPreviousMonth:(BOOL)isNext{
 	NSDate *nextMonth = isNext ? [currentTile.monthDate nextMonth] : [currentTile.monthDate previousMonth];
 	
 	TKDateInformation nextInfo = [nextMonth dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
