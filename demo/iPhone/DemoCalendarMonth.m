@@ -117,14 +117,18 @@
 		int r = arc4random();
 		if(r % 3==1){
 			[self.dataDictionary setObject:[NSArray arrayWithObjects:@"Item one",@"Item two",nil] forKey:d];
-			[self.dataArray addObject:[NSNumber numberWithBool:YES]];
+			[self.dataArray addObject:[NSNumber numberWithInt:2]]; //choose amount of dots
 			
 		}else if(r%4==1){
 			[self.dataDictionary setObject:[NSArray arrayWithObjects:@"Item one",nil] forKey:d];
-			[self.dataArray addObject:[NSNumber numberWithBool:YES]];
+			[self.dataArray addObject:[NSNumber numberWithInt:1]];
+			
+		}else if(r%5==1){
+			[self.dataDictionary setObject:[NSArray arrayWithObjects:@"Item one", @"Item two", @"Item three", @"Item four", nil] forKey:d];
+			[self.dataArray addObject:[NSNumber numberWithInt:4]];
 			
 		}else
-			[self.dataArray addObject:[NSNumber numberWithBool:NO]];
+			[self.dataArray addObject:[NSNumber numberWithInt:0]];
 		
 		
 		TKDateInformation info = [d dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];

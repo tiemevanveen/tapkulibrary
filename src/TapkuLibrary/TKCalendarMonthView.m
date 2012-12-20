@@ -81,6 +81,7 @@
 
 #define dotFontSize 18.0
 #define dateFontSize 22.0
+#define numberOfMaxDots 6
 
 #pragma mark Accessibility Container methods
 - (BOOL) isAccessibilityElement{
@@ -277,7 +278,7 @@
 	
 	return CGRectMake(col*46, row*44+6, 47, 45);
 }
-- (void) drawTileInRect:(CGRect)r day:(int)day mark:(BOOL)mark font:(UIFont*)f1 font2:(UIFont*)f2{
+- (void) drawTileInRect:(CGRect)r day:(int)day mark:(int)mark font:(UIFont*)f1 font2:(UIFont*)f2{
 	
 	NSString *str = [NSString stringWithFormat:@"%d",day];
 	
@@ -292,7 +293,7 @@
 		r.size.height = 10;
 		r.origin.y += 18;
 		
-		[@"•" drawInRect: r
+		[[@"••••••" substringToIndex:MIN(MAX(mark, 0), numberOfMaxDots)] drawInRect: r
 				withFont: f2
 		   lineBreakMode: UILineBreakModeWordWrap 
 			   alignment: UITextAlignmentCenter];
@@ -327,9 +328,9 @@
 		for(int i = firstOfPrev;i<= lastOfPrev;i++){
 			r = [self rectForCellAtIndex:index];
 			if ([marks count] > 0)
-				[self drawTileInRect:r day:i mark:[[marks objectAtIndex:index] boolValue] font:font font2:font2];
+				[self drawTileInRect:r day:i mark:[[marks objectAtIndex:index] intValue] font:font font2:font2];
 			else
-				[self drawTileInRect:r day:i mark:NO font:font font2:font2];
+				[self drawTileInRect:r day:i mark:0 font:font font2:font2];
 			index++;
 		}
 	}
@@ -343,9 +344,9 @@
 		if(today == i) [[UIColor whiteColor] set];
 		
 		if ([marks count] > 0) 
-			[self drawTileInRect:r day:i mark:[[marks objectAtIndex:index] boolValue] font:font font2:font2];
+			[self drawTileInRect:r day:i mark:[[marks objectAtIndex:index] intValue] font:font font2:font2];
 		else
-			[self drawTileInRect:r day:i mark:NO font:font font2:font2];
+			[self drawTileInRect:r day:i mark:0 font:font font2:font2];
 		if(today == i) [color set];
 		index++;
 	}
@@ -355,9 +356,9 @@
 	while(index % 7 != 0){
 		r = [self rectForCellAtIndex:index] ;
 		if ([marks count] > 0) 
-			[self drawTileInRect:r day:i mark:[[marks objectAtIndex:index] boolValue] font:font font2:font2];
+			[self drawTileInRect:r day:i mark:[[marks objectAtIndex:index] intValue] font:font font2:font2];
 		else
-			[self drawTileInRect:r day:i mark:NO font:font font2:font2];
+			[self drawTileInRect:r day:i mark:0 font:font font2:font2];
 		i++;
 		index++;
 	}
@@ -398,18 +399,7 @@
 	[self addSubview:self.selectedImageView];
 	self.currentDay.text = [NSString stringWithFormat:@"%d",day];
 	
-	if ([marks count] > 0) {
-		
-		if([[marks objectAtIndex: row * 7 + column ] boolValue]){
-			[self.selectedImageView addSubview:self.dot];
-		}else{
-			[self.dot removeFromSuperview];
-		}
-		
-		
-	}else{
-		[self.dot removeFromSuperview];
-	}
+    self.dot.text = [@"••••••" substringToIndex:MIN(MAX([[marks objectAtIndex:(row*7+column)] intValue], 0), numberOfMaxDots)];
 	
 	if(column < 0){
 		column = 6;
@@ -494,14 +484,7 @@
 	[self addSubview:self.selectedImageView];
 	self.currentDay.text = [NSString stringWithFormat:@"%d",day];
 	
-	if ([marks count] > 0) {
-		if([[marks objectAtIndex: row * 7 + column] boolValue])
-			[self.selectedImageView addSubview:self.dot];
-		else
-			[self.dot removeFromSuperview];
-	}else{
-		[self.dot removeFromSuperview];
-	}
+    self.dot.text = [@"••••••" substringToIndex:MIN(MAX([[marks objectAtIndex:(row*7+column)] intValue], 0), numberOfMaxDots)];
 	
 
 	
@@ -559,7 +542,6 @@
 		r.origin.y += 29;
 		r.size.height -= 31;
 		_dot = [[UILabel alloc] initWithFrame:r];
-		_dot.text = @"•";
 		_dot.textColor = [UIColor whiteColor];
 		_dot.backgroundColor = [UIColor clearColor];
 		_dot.font = [UIFont boldSystemFontOfSize:dotFontSize];

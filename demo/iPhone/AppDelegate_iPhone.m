@@ -33,7 +33,7 @@
 #import "RootViewController.h"
 
 @implementation AppDelegate_iPhone
-@synthesize root=_root,navigationController=_navigationController;
+@synthesize root=_root,navigationController=_navigationController,window=_window;
 
 
 #pragma mark -
